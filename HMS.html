@@ -7,16 +7,49 @@
     </head>
     <body>
         <header>
-            <div class="header-center">
+            <section id="header-center">
                 <h1> OB HEALTH </h1>
-            </div>
-            <div class="header-right" >
-                <h3 class="header-elements"> HMS Software </h3>
-                <h3 class="header-elements"> Contact Us </h3>
-            </div>
+            </section>
+            <section id="header-right" >
+                <h4 class="header-elements"> HMS Software </h4>
+                <h4 class="header-elements"> Contact Us </h4>
+                <button class="hamburger-menu" aria-label="Toggle navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </section>
         </header>
-        <p>
-
-        </p>
+        <main>
+            <section class="main">
+                <section class="login">
+                    <h2> Login </h2>
+                    <input type="text" 
+                        id="email" 
+                        name="email" 
+                        placeholder="email" 
+                        size="25" 
+                    />
+                    <input type="text" 
+                    id="password" 
+                    name="password" 
+                    placeholder="password" 
+                    size="25" 
+                    />
+                    <section class="clickable-text">
+                        <p> Forgotten email?</p>
+                    </section>
+                    <section class="clickable-request">
+                        <p> Request access </p>
+                    </section>
+                </section>
+                <section id="login-picture">
+                    <img src="med.jpg">
+                </section>
+            </section>
+            <footer class="footer">
+                <p>Olive blessing Inc</p>
+            </footer>
+        </main>
     </body>
 </html>

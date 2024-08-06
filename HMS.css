@@ -1,27 +1,124 @@
-body {
+html, body {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
 }
+
 header {
     display: flex;
     align-items: center;
-    justify-content: center;
     background-color: blue;
-    /* flex-direction: row; */
 }
 
-.header-center {
-    display: flex;
+#header-center {
     margin-left: auto;
     color: white;
 }
 
-.header-right {
+#header-right {
     display: flex;
-    flex-direction: row;
     margin-left: auto;
     padding: 0.5%;
     color: white;
     gap: 1vw;
 }
 
+.main {
+    display: flex;
+    /* gap: 15vw; */
+    margin-right: 4vw;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    background-color:aliceblue;
+    text-align: center;
+    border-radius: 2vw;
+    width: 55%;
+    height: 60%;
+    min-width: 400px;
+    min-height: 450px;
+    gap: 1.5vw;
+    margin-left: 3vw;
+    margin-right: 10vw;
+    margin-top: 5vw;
+}
+
+input::placeholder {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 3em;
+}
+
+.clickable-request {
+    color: red;
+    margin-bottom: 2vw;
+    font-size: large;
+}
+
+#login-picture {
+    display: flex;
+    height: 75vh;
+    overflow: hidden;
+    margin-bottom: 1%;
+    margin-top: 2%;
+    border-radius: 15px;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+}
+
+input {
+    width: 20em;
+    height: 3em;
+    margin-left: 7vw;
+    border-radius: 10px;
+}
+
+.hamburger-menu {
+    display: none;
+    width: 50px;
+    height: 40px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.bar {
+    display: block;
+    background-color: black;
+    height: 5px;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.footer {
+    background-color:lightblue;
+    width: 100%;
+    height: 5%;
+    text-align: center;
+    font-size: large;
+}
+
+@media screen and (max-width: 500px) {
+    .header-elements {
+        display: none;
+    }
+    .hamburger-menu  {
+        display: block;
+    }
+}
