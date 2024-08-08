@@ -1,3 +1,4 @@
+/* Homepage */
 html, body {
     display: flex;
     flex-direction: column;
@@ -34,7 +35,7 @@ header {
     display: flex;
     flex-direction: column;
     background-color:aliceblue;
-    text-align: center;
+    align-items: center;
     border-radius: 2vw;
     width: 55%;
     height: 60%;
@@ -56,7 +57,7 @@ h1 {
 }
 
 h4 {
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 h2 {
@@ -78,16 +79,12 @@ h2 {
     border-radius: 15px;
 }
 
-.img {
-    width: 100%;
-    height: 100%;
-}
-
 input {
-    width: 20em;
+    width: 25em;
     height: 3em;
-    margin-left: 7vw;
     border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: .5rem;
 }
 
 .hamburger-menu {
@@ -106,11 +103,11 @@ input {
     margin: 5px 0;
 }
 
-.footer {
-    background-color:lightblue;
+footer {
+    background-color:blue;
     width: 100%;
-    height: 5%;
-    text-align: center;
+    margin-top: 1rem;
+    padding: .5rem;
     font-size: large;
 }
 
@@ -121,4 +118,53 @@ input {
     .hamburger-menu  {
         display: block;
     }
+}
+
+/* patient registration */
+#patient-registration {
+    display: grid;
+    gap: .5rem;
+    padding: .2em;
+}
+
+.required-details {
+    display: grid;
+    gap: .5em;
+    background-color: aqua;
+    border-radius: 15px;
+    padding: .5rem;
+}
+
+.name-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.page-details {
+    margin-top: 1em;
+    text-align: center;
+    font-size: x-large;
+}
+
+.label-container {
+    display: grid;
+    background-color: white;
+    border-radius: 15px;
+    padding-left: .5rem;
+    gap: .3rem;
+}
+
+.contact-inputs {
+    display: grid;
+    gap: .2em;
+}
+
+select {
+    width: 6rem;
+    margin-bottom: .2rem;
+}
+
+.summary textarea {
+    padding: .2rem;
+    margin-bottom: .5rem;
 }
