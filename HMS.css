@@ -1,7 +1,5 @@
 /* Homepage */
 html, body {
-    display: flex;
-    flex-direction: column;
     margin: 0;
     padding: 0;
 }
@@ -27,7 +25,6 @@ header {
 
 .main {
     display: flex;
-    /* gap: 15vw; */
     margin-right: 4vw;
 }
 
@@ -81,7 +78,7 @@ h2 {
 
 input {
     width: 25em;
-    height: 3em;
+    height: 2em;
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: .5rem;
@@ -106,9 +103,12 @@ input {
 footer {
     background-color:blue;
     width: 100%;
-    margin-top: 1rem;
-    padding: .5rem;
+    height: 2.5rem;
+    margin-top: 0.5rem;
+    padding: .1rem;
     font-size: large;
+    text-align: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 500px) {
@@ -123,16 +123,16 @@ footer {
 /* patient registration */
 #patient-registration {
     display: grid;
-    gap: .5rem;
+    gap: .4rem;
     padding: .2em;
 }
 
-.required-details {
+#patient-details {
     display: grid;
     gap: .5em;
     background-color: aqua;
     border-radius: 15px;
-    padding: .5rem;
+    padding: 1rem;
 }
 
 .name-inputs {
@@ -141,7 +141,7 @@ footer {
 }
 
 .page-details {
-    margin-top: 1em;
+    margin-top: .5em;
     text-align: center;
     font-size: x-large;
 }
@@ -162,6 +162,7 @@ footer {
 select {
     width: 6rem;
     margin-bottom: .2rem;
+    padding: .2rem;
 }
 
 .summary textarea {
