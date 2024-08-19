@@ -1,0 +1,171 @@
+/* Homepage */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: blue;
+}
+
+#header-center {
+    margin-left: auto;
+    color: white;
+}
+
+#header-right {
+    display: flex;
+    margin-left: auto;
+    padding: 0.5%;
+    color: white;
+    gap: 1vw;
+}
+
+.main {
+    display: flex;
+    margin-right: 4vw;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    background-color:aliceblue;
+    align-items: center;
+    border-radius: 2vw;
+    width: 55%;
+    height: 60%;
+    min-width: 400px;
+    min-height: 450px;
+    gap: 1.5vw;
+    margin-left: 3vw;
+    margin-right: 10vw;
+    margin-top: 5vw;
+}
+
+input::placeholder {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1em;
+}
+
+h2 {
+    font-size: 3em;
+}
+
+.clickable-request {
+    color: red;
+    margin-bottom: 2vw;
+    font-size: large;
+}
+
+#login-picture {
+    display: flex;
+    height: 75vh;
+    overflow: hidden;
+    margin-bottom: 1%;
+    margin-top: 2%;
+    border-radius: 15px;
+}
+
+input {
+    width: 25em;
+    height: 2em;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: .5rem;
+}
+
+.hamburger-menu {
+    display: none;
+    width: 50px;
+    height: 40px;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.bar {
+    display: block;
+    background-color: black;
+    height: 5px;
+    width: 100%;
+    margin: 5px 0;
+}
+
+footer {
+    background-color:blue;
+    width: 100%;
+    height: 2.5rem;
+    margin-top: 0.5rem;
+    padding: .1rem;
+    font-size: large;
+    text-align: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 550px) {
+    .header-elements {
+        display: none;
+    }
+    .hamburger-menu  {
+        display: block;
+    }
+}
+
+/* patient registration */
+#patient-registration {
+    display: grid;
+    gap: .4rem;
+    padding: .2em;
+}
+
+#patient-details {
+    display: grid;
+    gap: .5em;
+    background-color: aqua;
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+.name-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.page-details {
+    margin-top: .5em;
+    text-align: center;
+    font-size: x-large;
+}
+
+.label-container {
+    display: grid;
+    background-color: white;
+    border-radius: 15px;
+    padding-left: .5rem;
+    gap: .3rem;
+}
+
+.contact-inputs {
+    display: grid;
+    gap: .2em;
+}
+
+select {
+    width: 6rem;
+    margin-bottom: .2rem;
+    padding: .2rem;
+}
+
+.summary textarea {
+    padding: .2rem;
+    margin-bottom: .5rem;
+}
