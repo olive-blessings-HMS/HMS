@@ -161,13 +161,13 @@ footer {
 
 select {
     width: 10rem;
-    height: 2rem;
+    height: 2.4rem;
     margin-bottom: .2rem;
     padding: .2rem;
     cursor: pointer;
     padding: 8px 16px;
     border: 1px solid rgb(39, 39, 43);
-    font-size: .9rem;
+    font-size: 1rem;
 }
 
 .summary textarea {
