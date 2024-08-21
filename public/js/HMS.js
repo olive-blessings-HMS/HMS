@@ -1,5 +1,7 @@
 // Select all <select> elements with the name 'state'
-const selectElements = document.getElementsByName('state');
+const selectElements = document.getElementById('state');
+const selectElementsTwo = document.getElementById('state_origin');
+
 let states = {
     1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
     7: 'Benue', 8: 'Borno', 9: 'Cross River', 10: 'Delta', 11: 'Ebonyi', 12: 'Edo', 
@@ -10,16 +12,17 @@ let states = {
     37: 'Federal Capital Territory (FCT)', 38: 'N/A'
 };
 
-// Iterate over each <select> element and add options
-selectElements.forEach(selectElement => {
-    Object.entries(states).forEach(([key, value]) => {
-        const option = document.createElement("option");
-        option.value = key;
-        option.textContent = value;
-        selectElement.appendChild(option);
-    });
+Object.entries(states).forEach(([key, value]) => {
+    createSelect(selectElements, key, value);
+    createSelect(selectElementsTwo, key, value);
 });
 
+function createSelect(element, key, value) {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = value;
+    element.appendChild(option)
+}
 
 let patientRegistration = document.getElementById('patient-details');
 
@@ -27,6 +30,7 @@ patientRegistration.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(patientRegistration);
     const urlEncodedData = new URLSearchParams(formData).toString();
+    console.log("hehe")
 
     try {
         const response = await fetch('/submit', {
