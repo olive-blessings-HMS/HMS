@@ -159,15 +159,16 @@ footer {
     gap: .2em;
 }
 
-select {
+select, button {
     width: 10rem;
     height: 2.4rem;
     margin-bottom: .2rem;
+    margin-left: .4rem;
     padding: .2rem;
     cursor: pointer;
     padding: 8px 16px;
-    border: 1px solid rgb(39, 39, 43);
-    font-size: 1rem;
+    border: 1.5px solid rgb(39, 39, 43);
+    font-size: 1.2rem;
 }
 
 .summary textarea {
