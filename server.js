@@ -22,13 +22,47 @@ app.post('/submit', (req, res) => {
          console.error("connection failed" + error.stack)
          return;
       }
+
       console.log("connection successful")
    });
 
-   // const address
    console.log('Form data received', formDetails);
 });
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
+
+class PatientName {
+   constructor(firstName, middleName, surName) {
+      this.firstName = formDetails.firstname;
+      this.middleName = formDetails.middlename;
+      this.lastName = formDetails.lastname;
+   }
+
+   get fullname() {
+      return "${firstName} ${middleName} ${lastName}";
+   }
+}
+
+class PatientAttributes {
+   constructor(birthDay, gender, religion, occupation, nationality) {
+      this.birthDay = formDetails.birthday;
+      this.gender = formDetails.gender;
+      this.regilion = formDetails.regilion;
+      this.occupation = formDetails.occupation;
+      this.nationality = formDetails.nationality;
+   }
+}
+
+class PatientAddress {
+   constructor() {
+      
+   }
+}
+
+
+
+function insertPersonalDetails(phone_number, email, address_info, state_of_orign, nationality, doctors_note) {
+
+  }
