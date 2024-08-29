@@ -1,6 +1,6 @@
 // Select all <select> elements with the name 'state'
 const selectElements = document.getElementById('state');
-const selectElementsTwo = document.getElementById('state_origin');
+const selectElementsTwo = document.getElementById('stateOfOrigin');
 
 let states = {
     1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
