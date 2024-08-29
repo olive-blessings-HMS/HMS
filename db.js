@@ -2,12 +2,11 @@ const mysql = require('mysql2');
 require('dotenv').config();
 
 class PatientAddress {
-    constructor({address, addressTwo, lga, state, stateOfOrigin}) {
+    constructor({address, addressTwo, lga, state}) {
        this.address = address;
        this.addressTwo = addressTwo;
        this.lga = lga;
        this.state = state;
-       this.stateOfOrigin = stateOfOrigin;
     };
 
     saveToDatabase() {
@@ -17,12 +16,68 @@ class PatientAddress {
     };
 };
 
-function applyFromdata(formDetails) {
+
+class PatientName {
+    constructor({firstname, middlename, lastname}) {
+       this.firstName = firstname;
+       this.middleName = middlename;
+       this.lastName = lastname;
+    }
+ 
+    getFullname() {
+       return `${this.firstName} ${this.middleName} ${this.lastName}`;
+    }
+
+    saveToDatabase() {
+        const query = `INSERT INTO patient_details (first_name, middle_name, last_name) values (?,?,?)`;
+        const values = [this.firstName, this.middleName, this.lastName];
+        updatedb(query, values);
+    }
+};
+
+class PatientContact {
+    constructor({contactNumber, contactEmail}) {
+        this.contactNumber = contactNumber;
+        this.contactEmail = contactEmail;
+    }
+
+    saveToDatabase() {
+        const query = `INSERT INTO patient_details (phone_number, email) values (?,?,?)`;
+        const values = [this.contactNumber, this.contactEmail];
+        updatedb(query, values);
+    }
+}
+
+class PatientOtherInfo {
+    constructor(dob, gender, stateOfOrigin, nationality, religion, occupation, doctorsNote) {
+        this.dob = dob;
+        this.gender = gender;
+        this.stateOfOrigin = stateOfOrigin;
+        this.nationality = nationality;
+        this.religion = religion;
+        this.occupation = occupation;
+        this.doctorsNote = doctorsNote;
+    }
+
+    saveToDatabase() {
+        
+    }
+}
+
+
+function saveAllPateintdetails(formDetails) {
     const patientName = new PatientName(formDetails);
     const patientAddress = new PatientAddress(formDetails);
-    console.log(`print addresstwo ${patientAddress.addressTwo}`);
     patientAddress.saveToDatabase();
+    patientName.saveToDatabase;
 };
+
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS
+ });
 
 function updatedb(query, values = []) {
     pool.getConnection(
@@ -41,28 +96,6 @@ function updatedb(query, values = []) {
     });
     
 };
-
-class PatientName {
-    constructor({firstname, middlename, lastname}) {
-       this.firstName = firstname;
-       this.middleName = middlename;
-       this.lastName = lastname;
-    }
- 
-    getFullname() {
-       return `${this.firstName} ${this.middleName} ${this.lastName}`;
-    }
-};
-
-
-
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS
- });
-
 
 
 module.exports = applyFromdata;
