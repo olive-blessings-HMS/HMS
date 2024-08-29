@@ -168,7 +168,7 @@ select, button {
     cursor: pointer;
     padding: 8px 16px;
     border: 1.5px solid rgb(39, 39, 43);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .summary textarea {
