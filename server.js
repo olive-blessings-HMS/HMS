@@ -9,7 +9,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/submit', (req, res) => {
    const formDetails = req.body;
-   applyFromdata(formDetails);
+   saveAllPateintdetails(formDetails);
+
 });
 
 app.listen(port, () => {
