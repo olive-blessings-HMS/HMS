@@ -24,7 +24,7 @@
         <main>
             <section id="patient-registration">
                 <h3 class="page-details">Patient Registration</h3>
-                <form action="/submit" id="patient-details">
+                <form action="/submit" method="POST" id="patient-details">
                     <section class="name label-container">
                         <label>Name</label>
                         <section class="name-inputs ">
@@ -90,7 +90,7 @@
                     </section>
                     <section class="state-of-origin label-container">
                         <label>State of origin</label>
-                        <select id = "state_origin" name="state_origin">
+                        <select id = "stateOfOrigin" name="state_origin">
                             <option id= "select-selected" disabled selected >Select State</option>
                         </select>
                     </section>
