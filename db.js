@@ -18,68 +18,67 @@ class PatientAddress {
 
 
 class PatientName {
-    constructor({firstname, middlename, lastname}) {
+    constructor({firstname, middlename, lastname, gender}) {
        this.firstName = firstname;
        this.middleName = middlename;
        this.lastName = lastname;
-    }
+       this.gender = gender;
+    };
  
     getFullname() {
        return `${this.firstName} ${this.middleName} ${this.lastName}`;
-    }
+    };
 
     saveToDatabase() {
-        const query = 'INSERT INTO patient_details (first_name, middle_name, last_name) values (?,?,?)';
-        const values = [this.firstName, this.middleName, this.lastName];
+        const query = `INSERT INTO patient_details (first_name, middle_name, last_name,
+        gender) values (?,?,?,?)`;
+        const values = [this.firstName, this.middleName, this.lastName, this.gender];
         updatedb(query, values);
-    }
+    };
 };
 
 class PatientContact {
     constructor({contactNumber, contactEmail}) {
         this.contactNumber = contactNumber;
         this.contactEmail = contactEmail;
-    }
+    };
 
     saveToDatabase() {
-        const query = `INSERT INTO patient_details (phone_number, email) values (?,?,?)`;
+        const query = `INSERT INTO patient_details (phone_number, email) values (?,?)`;
         const values = [this.contactNumber, this.contactEmail];
         updatedb(query, values);
-    }
-}
+    };
+};
 
 class PatientOtherInfo {
-    constructor({dob, gender, stateOfOrigin, nationality, religion, occupation, doctorsNote}) {
-        this.dob = dob;
-        this.gender = gender;
+    constructor({birthday, stateOfOrigin, religion, occupation, doctorsNote}) {
+        this.dob = birthday;
         this.stateOfOrigin = stateOfOrigin;
-        this.nationality = nationality;
         this.religion = religion;
         this.occupation = occupation;
         this.doctorsNote = doctorsNote;
-    }
+    };
 
     saveToDatabase() {
         const query = `
-            INSERT INTO patient_details (dob, gender, 
-            state_of_origin, nationality, religion, 
-            occupation, doctors_note) values (?,?,?,?,?,?,?)`
-        const values = [this.dob, this.gender, this.stateOfOrigin, 
-            this.nationality, this.religion, this.occupation, this.doctorsNote];
+            INSERT INTO patient_details (dob,
+            state_of_origin, religion, 
+            occupation, doctors_note) values (?,?,?,?,?)`;
+        const values = [this.dob, this.stateOfOrigin,
+             this.religion, this.occupation, this.doctorsNote];
         updatedb(query, values);
-        console.log("is it even reaching here?");
-    }
-}
+    };
+};
 
 function saveAllPatientDetails(formDetails) {
-    const patientAddress = new PatientAddress(formDetails);
+    // const patientAddress = new PatientAddress(formDetails);
     const patientName = new PatientName(formDetails);
+    // const patientOtherInfo = new PatientOtherInfo(formDetails);
     const patientContact = new PatientContact(formDetails);
-    const patientOtherInfo = new PatientOtherInfo(formDetails);
-    patientAddress.saveToDatabase();
     patientName.saveToDatabase();
+    // patientOtherInfo.saveToDatabase();
+    // patientAddress.saveToDatabase();
     patientContact.saveToDatabase();
-    patientOtherInfo.saveToDatabase();
 };
 
 const pool = mysql.createPool({
@@ -101,10 +100,9 @@ function updatedb(query, values = []) {
                 console.log(`error message ${err}`);
             }
             console.log(`${results}`);
+            conn.release;
         });
-        conn.release;
-    });
-    
+    }); 
 };
 
 
