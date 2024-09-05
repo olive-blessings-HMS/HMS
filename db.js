@@ -29,11 +29,11 @@ class PatientName {
        return `${this.firstName} ${this.middleName} ${this.lastName}`;
     };
 
-    saveToDatabase() {
+    saveToDatabase(callback) {
         const query = `INSERT INTO patient_details (first_name, middle_name, last_name,
         gender) values (?,?,?,?)`;
         const values = [this.firstName, this.middleName, this.lastName, this.gender];
-        updatedb(query, values);
+        updatedb(query, values, callback);
     };
 };
 
@@ -43,9 +43,10 @@ class PatientContact {
         this.contactEmail = contactEmail;
     };
 
-    saveToDatabase() {
-        const query = `INSERT INTO patient_details (phone_number, email) values (?,?)`;
-        const values = [this.contactNumber, this.contactEmail];
+    saveToDatabase(rowId) {
+        const query = `UPDATE patient_details SET phone_number = ?, email = ?
+        WHERE id = ?`;
+        const values = [this.contactNumber, this.contactEmail, rowId];
         updatedb(query, values);
     };
 };
@@ -59,26 +60,27 @@ class PatientOtherInfo {
         this.doctorsNote = doctorsNote;
     };
 
-    saveToDatabase() {
-        const query = `
-            INSERT INTO patient_details (dob,
-            state_of_origin, religion, 
-            occupation, doctors_note) values (?,?,?,?,?)`;
+    saveToDatabase(rowId) {
+        const query = `UPDATE patient_details 
+        SET dob = ?, state_of_origin = ?, religion = ?, occupation = ?, doctors_note = ? 
+        WHERE id = ?`;
         const values = [this.dob, this.stateOfOrigin,
-             this.religion, this.occupation, this.doctorsNote];
+             this.religion, this.occupation, this.doctorsNote, rowId];
         updatedb(query, values);
     };
 };
 
 function saveAllPatientDetails(formDetails) {
-    // const patientAddress = new PatientAddress(formDetails);
+    const patientAddress = new PatientAddress(formDetails);
     const patientName = new PatientName(formDetails);
-    // const patientOtherInfo = new PatientOtherInfo(formDetails);
     const patientContact = new PatientContact(formDetails);
-    patientName.saveToDatabase();
-    // patientOtherInfo.saveToDatabase();
+    const patientOtherInfo = new PatientOtherInfo(formDetails);
+    patientName.saveToDatabase((insertId) => {
+        console.log(`insert ID ${insertId}`);
+        patientContact.saveToDatabase(insertId);
+        patientOtherInfo.saveToDatabase(insertId);
+    });
     // patientAddress.saveToDatabase();
-    patientContact.saveToDatabase();
 };
 
 const pool = mysql.createPool({
@@ -88,20 +90,23 @@ const pool = mysql.createPool({
     password: process.env.DB_PASS
  });
 
-function updatedb(query, values = []) {
+function updatedb(query, values = [], callback) {
     pool.getConnection(
         (err, conn) => {
         if (err) {
             console.log('data base failed');
             throw err;
-        }
+        };
         conn.query(query, values, (err, results) => {
             if (err) {
                 console.log(`error message ${err}`);
+            };
+
+            if (callback) {
+                callback(results.insertId);
             }
-            console.log(`${results}`);
-            conn.release;
-        });
+            conn.release();
+        });  
     }); 
 };
 
