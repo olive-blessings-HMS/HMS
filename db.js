@@ -1,22 +1,6 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-class PatientAddress {
-    constructor({address, addressTwo, lga, state}) {
-       this.address = address;
-       this.addressTwo = addressTwo;
-       this.lga = lga;
-       this.state = state;
-    };
-
-    saveToDatabase() {
-        const query = 'INSERT INTO address (street_name, street_name_two, lga, state) Values (?,?,?,?)';
-        const values = [this.address, this.addressTwo, this.lga, this.state];
-        updatedb(query, values);
-    };
-};
-
-
 class PatientName {
     constructor({firstname, middlename, lastname, gender}) {
        this.firstName = firstname;
@@ -34,6 +18,22 @@ class PatientName {
         gender) values (?,?,?,?)`;
         const values = [this.firstName, this.middleName, this.lastName, this.gender];
         updatedb(query, values, callback);
+    };
+};
+
+class PatientAddress {
+    constructor({address, addressTwo, lga, state}) {
+       this.address = address;
+       this.addressTwo = addressTwo;
+       this.lga = lga;
+       this.state = state;
+    };
+
+    saveToDatabase(rowId) {
+        const query = `UPDATE patient_details SET street_name = ?, street_name_two = ?, lga = ?, state = ?
+        WHERE id = ?`;
+        const values = [this.address, this.addressTwo, this.lga, this.state, rowId];
+        updatedb(query, values);
     };
 };
 
@@ -76,11 +76,10 @@ function saveAllPatientDetails(formDetails) {
     const patientContact = new PatientContact(formDetails);
     const patientOtherInfo = new PatientOtherInfo(formDetails);
     patientName.saveToDatabase((insertId) => {
-        console.log(`insert ID ${insertId}`);
         patientContact.saveToDatabase(insertId);
         patientOtherInfo.saveToDatabase(insertId);
+        patientAddress.saveToDatabase(insertId);
     });
-    // patientAddress.saveToDatabase();
 };
 
 const pool = mysql.createPool({
@@ -109,6 +108,5 @@ function updatedb(query, values = [], callback) {
         });  
     }); 
 };
-
 
 module.exports = saveAllPatientDetails;
