@@ -92,19 +92,23 @@ const pool = mysql.createPool({
 function updatedb(query, values = [], callback) {
     pool.getConnection(
         (err, conn) => {
+
         if (err) {
             console.log('data base failed');
             throw err;
         };
+
         conn.query(query, values, (err, results) => {
+            conn.release();
+
             if (err) {
                 console.log(`error message ${err}`);
+                return;
             };
 
             if (callback) {
                 callback(results.insertId);
             }
-            conn.release();
         });  
     }); 
 };
