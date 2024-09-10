@@ -8,9 +8,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 app.post('/submit', (req, res) => {
-   const formDetails = req.body;
-   console.log(formDetails);
-   saveAllPatientDetails(formDetails);
+    const formDetails = req.body;
+    console.log(formDetails);
+    saveAllPatientDetails(formDetails);
+    res.json({ redirect: '/html/secContact.html' });
 
 });
 
