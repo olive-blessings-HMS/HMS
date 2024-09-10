@@ -13,11 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         37: 'Federal Capital Territory (FCT)', 38: 'N/A'
     };
 
-    Object.entries(states).forEach(([key, value]) => {
-        createSelect(selectElements, key, value);
-        createSelect(selectElementsTwo, key, value);
-    });
-
     function createSelect(element, key, value) {
         const option = document.createElement("option");
         option.value = key;
@@ -25,16 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
         element.appendChild(option)
     }
 
+    Object.entries(states).forEach(([key, value]) => {
+        createSelect(selectElements, key, value);
+        createSelect(selectElementsTwo, key, value);
+    });
+
     let patientRegistration = document.getElementById('patient-details');
 
     patientRegistration.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const formData = new FormData(patientRegistration);
-        const urlEncodedData = new URLSearchParams(formData).toString();
-
-        console.log('sending network status')
 
         try {
+
+            const formData = new FormData(patientRegistration);
+            const urlEncodedData = new URLSearchParams(formData).toString();
+
+            if (!validateForm(formData)) {
+                throw new Error("Required fields are missing");
+            }
+    
             const response = await fetch('/submit', {
             method: "POST",
             headers: {
@@ -54,4 +58,62 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Network error occured:', error);
         }
     });
+
+    function validateForm(formData) {
+    
+        const firstNameError = document.getElementById("firstNameError");
+        const lastNameError = document.getElementById("lastNameError");
+        const genderError = document.getElementById("genderError");
+        const birthDayError = document.getElementById("birthDayError");
+        const contactNumberError = document.getElementById("contactNumberError");
+    
+        firstNameError.textContent = "";
+        lastNameError.textContent = "";
+        genderError.textContent = "";
+        birthdayError.textContent = "";
+        contactNumberError.textContent = "";
+    
+        let isValid = true;
+        
+        console.log(formData.get("firstname"));
+        if (formData.get("firstname") === "" || formData.get("firstname") === null 
+        || /\d/.test(formData.get("firstname"))) {
+            firstNameError.textContent = 
+                "please enter your first name properly";
+            firstNameError.style.color = "red"
+            isValid = false;
+        };
+       
+        if (formData.get("lastname") === "" || formData.get("lastname") === null  
+        || /\d/.test(formData.get("firstname"))) {
+            lastNameError.textContent = 
+                "please enter your last name properly";
+            lastNameError.style.color = "red"
+            isValid = false;
+        };
+  
+        if (formData.get("gender") === "" || formData.get("gender") === null) {
+            genderError.textContent = 
+                "please select a gender";
+            genderError.style.color = "red"
+            isValid = false;
+        };
+     
+        if (formData.get("birthday") === "") {
+            birthdayError.textContent = 
+                "please enter birthday";
+            birthdayError.style.color = "red"
+            isValid = false;
+        };
+    
+        if (formData.get("contactNumber") === "" || /[a-zA-Z]/.test(formData.get("contactNumber"))) {
+            contactNumberError.textContent = 
+                "please enter a valid phonenumber";
+            contactNumberError.style.color = "red"
+            isValid = false;
+        };
+    
+        return isValid;
+    };
 });
+
