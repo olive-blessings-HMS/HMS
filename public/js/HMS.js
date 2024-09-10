@@ -30,24 +30,28 @@ patientRegistration.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(patientRegistration);
     const urlEncodedData = new URLSearchParams(formData).toString();
-    console.log("hehe")
+
+    console.log('sending network status')
 
     try {
         const response = await fetch('/submit', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-            body: urlEncodedData,
-        });
-
-        if (!response.ok) {
-            throw Error('Network response not ok');
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        body: urlEncodedData
+        })
+    
+        if (response.ok) {
+            const data = await response.json();
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        } else {
+            console.log('Server error:', response.status);
         }
 
-        const result = await response.json();
-        console.log("success", result);
-    } catch(error) {
-        console.error('Error', error);
+    } catch (error) {
+        console.log('Network error occured:', error);
     }
 });
