@@ -14,8 +14,12 @@ class Name {
     };
 
     saveToDatabase(tableName, callback) {
-        const query = `INSERT INTO ${tableName} (first_name, middle_name, last_name,
-        gender) values (?,?,?,?)`;
+        let query = `INSERT INTO ${tableName} (first_name, middle_name, last_name, gender)
+        values (?,?,?,?)`
+        if (tableName != "patient_details") {
+            query = `INSERT INTO ${tableName} (first_name, middle_name, last_name)
+            values (?,?,?)`
+        };
         const values = [this.firstName, this.middleName, this.lastName, this.gender];
         updatedb(query, values, callback);
     };
@@ -87,17 +91,17 @@ function createSecContactInfo(formDetails) {
     };
 }
 
-function saveToDatabase(patientDetails) {
+function saveToDatabase(patientDetails, secContactDetails) {
     patientDetails.patientName.saveToDatabase("patient_details", (patientId) => {
         patientDetails.patientAddress.saveToDatabase("patient_details", patientId),
         patientDetails.patientContact.saveToDatabase("patient_details", patientId),
         patientDetails.patientOtherInfo.saveToDatabase("patient_details", patientId)
     });
 
-    // secContactDetails.secContactName.saveToDatabase((secId) => {
-    //     secContactDetails.secContactAddress.saveToDatabase(secId),
-    //     secContactDetails.secContactInfo.saveToDatabase(secId)
-    // });
+    secContactDetails.secContactName.saveToDatabase("secondary_contact", (secId) => {
+        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secId),
+        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secId)
+    });
 }
 
 const pool = mysql.createPool({
