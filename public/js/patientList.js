@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error("Required fields are missing");
             }
     
-            const response = await fetch('/submit', {
+            const response = await fetch('/next', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
