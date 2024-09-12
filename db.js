@@ -1,8 +1,8 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-class PatientName {
-    constructor({firstname, middlename, lastname, gender}) {
+class Name {
+    constructor({firstname, middlename, lastname, gender = null}) {
        this.firstName = firstname;
        this.middleName = middlename;
        this.lastName = lastname;
@@ -21,7 +21,7 @@ class PatientName {
     };
 };
 
-class PatientAddress {
+class Address {
     constructor({address, addressTwo, lga, state}) {
        this.address = address;
        this.addressTwo = addressTwo;
@@ -37,7 +37,7 @@ class PatientAddress {
     };
 };
 
-class PatientContact {
+class ContactInfo {
     constructor({contactNumber, contactEmail}) {
         this.contactNumber = contactNumber;
         this.contactEmail = contactEmail;
@@ -51,7 +51,7 @@ class PatientContact {
     };
 };
 
-class PatientOtherInfo {
+class OtherInfos {
     constructor({birthday, stateOfOrigin, religion, occupation, doctorsNote}) {
         this.dob = birthday;
         this.stateOfOrigin = stateOfOrigin;
@@ -70,17 +70,30 @@ class PatientOtherInfo {
     };
 };
 
-function saveAllPatientDetails(formDetails) {
-    const patientAddress = new PatientAddress(formDetails);
-    const patientName = new PatientName(formDetails);
-    const patientContact = new PatientContact(formDetails);
-    const patientOtherInfo = new PatientOtherInfo(formDetails);
-    patientName.saveToDatabase((insertId) => {
-        patientContact.saveToDatabase(insertId);
-        patientOtherInfo.saveToDatabase(insertId);
-        patientAddress.saveToDatabase(insertId);
+function createPatientInfo(formDetails) {
+    return {
+        patientName : new Name(formDetails),
+        patientAddress : new Address(formDetails),
+        patientContact : new ContactInfo(formDetails),
+        patientOtherInfo : new OtherInfos(formDetails)
+    };
+}
+
+function createSecContactInfo(formDetails) {
+    return {
+        secContactName : new Name(formDetails),
+        secContactAddress : new Address(formDetails),
+        secContactInfo : new ContactInfo(formDetails)
+    };
+}
+
+function saveToDatabase(patientDetails) {
+    patientDetails.patientName.saveToDatabase((patientId) => {
+        patientDetails.patientAddress.saveToDatabase(patientId),
+        patientDetails.patientContact.saveToDatabase(patientId),
+        patientDetails.patientOtherInfo.saveToDatabase(patientId)
     });
-};
+}
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -113,4 +126,8 @@ function updatedb(query, values = [], callback) {
     }); 
 };
 
-module.exports = saveAllPatientDetails;
+module.exports = {
+    createPatientInfo,
+    createSecContactInfo,
+    saveToDatabase
+};
