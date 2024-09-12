@@ -1,18 +1,29 @@
 const express = require('express');
 const path = require('path');
-const saveAllPatientDetails = require('./db');
+const { createPatientInfo, saveToDatabase } = require('./db');
 const app = express();
 const port = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); 
 
-app.post('/submit', (req, res) => {
-    const formDetails = req.body;
-    console.log(formDetails);
-    saveAllPatientDetails(formDetails);
-    res.json({ redirect: '/html/secContact.html' });
+let patientDetailsStore = {};
 
+app.post('/next', (req, res) => {
+    const formDetails = req.body;
+    patientDetailsStore = createPatientInfo(formDetails);
+    res.json({ redirect: '/html/secContact.html' });
+});
+
+app.post('/save', (req, res) => {
+    if (!patientDetailsStore) {
+        return res.status(400);
+    }
+    formDetails = req.body;
+    secContactDetails = createSecContactInfo(formDetails);
+    saveToDatabase(patientDetailsStore);
+    patientDetailsStore = {};
+    res.json({ redirect: '/html/homepage.html' });
 });
 
 app.listen(port, () => {
