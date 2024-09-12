@@ -127,7 +127,7 @@ footer {
     padding: .2em;
 }
 
-#patient-details {
+#patient-details, #secContact {
     display: grid;
     gap: .5em;
     background-color: aqua;
