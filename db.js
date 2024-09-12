@@ -13,8 +13,8 @@ class Name {
        return `${this.firstName} ${this.middleName} ${this.lastName}`;
     };
 
-    saveToDatabase(callback) {
-        const query = `INSERT INTO patient_details (first_name, middle_name, last_name,
+    saveToDatabase(tableName, callback) {
+        const query = `INSERT INTO ${tableName} (first_name, middle_name, last_name,
         gender) values (?,?,?,?)`;
         const values = [this.firstName, this.middleName, this.lastName, this.gender];
         updatedb(query, values, callback);
@@ -29,8 +29,8 @@ class Address {
        this.state = state;
     };
 
-    saveToDatabase(rowId) {
-        const query = `UPDATE patient_details SET street_name = ?, street_name_two = ?, lga = ?, state = ?
+    saveToDatabase(tableName, rowId) {
+        const query = `UPDATE ${tableName} SET street_name = ?, street_name_two = ?, lga = ?, state = ?
         WHERE id = ?`;
         const values = [this.address, this.addressTwo, this.lga, this.state, rowId];
         updatedb(query, values);
@@ -43,8 +43,8 @@ class ContactInfo {
         this.contactEmail = contactEmail;
     };
 
-    saveToDatabase(rowId) {
-        const query = `UPDATE patient_details SET phone_number = ?, email = ?
+    saveToDatabase(tableName, rowId) {
+        const query = `UPDATE ${tableName} SET phone_number = ?, email = ?
         WHERE id = ?`;
         const values = [this.contactNumber, this.contactEmail, rowId];
         updatedb(query, values);
@@ -60,8 +60,8 @@ class OtherInfos {
         this.doctorsNote = doctorsNote;
     };
 
-    saveToDatabase(rowId) {
-        const query = `UPDATE patient_details 
+    saveToDatabase(tableName, rowId) {
+        const query = `UPDATE ${tableName}
         SET dob = ?, state_of_origin = ?, religion = ?, occupation = ?, doctors_note = ? 
         WHERE id = ?`;
         const values = [this.dob, this.stateOfOrigin,
@@ -88,11 +88,16 @@ function createSecContactInfo(formDetails) {
 }
 
 function saveToDatabase(patientDetails) {
-    patientDetails.patientName.saveToDatabase((patientId) => {
-        patientDetails.patientAddress.saveToDatabase(patientId),
-        patientDetails.patientContact.saveToDatabase(patientId),
-        patientDetails.patientOtherInfo.saveToDatabase(patientId)
+    patientDetails.patientName.saveToDatabase("patient_details", (patientId) => {
+        patientDetails.patientAddress.saveToDatabase("patient_details", patientId),
+        patientDetails.patientContact.saveToDatabase("patient_details", patientId),
+        patientDetails.patientOtherInfo.saveToDatabase("patient_details", patientId)
     });
+
+    // secContactDetails.secContactName.saveToDatabase((secId) => {
+    //     secContactDetails.secContactAddress.saveToDatabase(secId),
+    //     secContactDetails.secContactInfo.saveToDatabase(secId)
+    // });
 }
 
 const pool = mysql.createPool({
