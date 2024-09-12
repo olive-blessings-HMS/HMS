@@ -22,4 +22,39 @@ document.addEventListener('DOMContentLoaded', () =>{
         element.appendChild(option)
     }
 
+    let secContactRegistration = document.getElementById('secContact');
+
+    secContactRegistration.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        try {
+
+            const formData = new FormData(secContactRegistration);
+            const urlEncodedData = new URLSearchParams(formData).toString();
+
+            // if (!validateForm(formData)) {
+            //     throw new Error("Required fields are missing");
+            // }
+    
+            const response = await fetch('/save', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            body: urlEncodedData
+            })
+            
+            if (!response.ok) {
+                throw new Error('Server error:' + response.status);
+            }
+
+            const data = await response.json();
+            window.location.href = data.redirect;
+
+        } catch (error) {
+            console.log('Network error occured:', error);
+        }
+
+    });
+
 });
