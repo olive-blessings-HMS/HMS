@@ -1,16 +1,13 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-class Name {
-    constructor({firstname, middlename, lastname, gender = null}) {
+class Patient {
+    constructor({firstname, middlename, lastname, gender = null, age}) {
        this.firstName = firstname;
        this.middleName = middlename;
        this.lastName = lastname;
        this.gender = gender;
-    };
- 
-    getFullname() {
-       return `${this.firstName} ${this.middleName} ${this.lastName}`;
+       this.age = age;
     };
 
     saveToDatabase(tableName, callback) {
@@ -64,8 +61,8 @@ class OtherInfos {
         this.doctorsNote = doctorsNote;
     };
 
-    saveToDatabase(tableName, rowId) {
-        const query = `UPDATE ${tableName}
+    saveToDatabase(rowId) {
+        const query = `UPDATE patient_details
         SET dob = ?, state_of_origin = ?, religion = ?, occupation = ?, doctors_note = ? 
         WHERE id = ?`;
         const values = [this.dob, this.stateOfOrigin,
@@ -76,33 +73,43 @@ class OtherInfos {
 
 function createPatientInfo(formDetails) {
     return {
-        patientName : new Name(formDetails),
+        patientName : new Patient(formDetails),
         patientAddress : new Address(formDetails),
         patientContact : new ContactInfo(formDetails),
         patientOtherInfo : new OtherInfos(formDetails)
     };
-}
+};
 
 function createSecContactInfo(formDetails) {
     return {
-        secContactName : new Name(formDetails),
+        secContactName : new Patient(formDetails),
         secContactAddress : new Address(formDetails),
         secContactInfo : new ContactInfo(formDetails)
     };
-}
+};
 
 function saveToDatabase(patientDetails, secContactDetails) {
     patientDetails.patientName.saveToDatabase("patient_details", (patientId) => {
-        patientDetails.patientAddress.saveToDatabase("patient_details", patientId),
-        patientDetails.patientContact.saveToDatabase("patient_details", patientId),
-        patientDetails.patientOtherInfo.saveToDatabase("patient_details", patientId)
+        patientDetails.patientAddress.saveToDatabase("patient_details", patientId.insectId),
+        patientDetails.patientContact.saveToDatabase("patient_details", patientId.insectId),
+        patientDetails.patientOtherInfo.saveToDatabase(patientId.insectId)
     });
 
     secContactDetails.secContactName.saveToDatabase("secondary_contact", (secId) => {
-        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secId),
-        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secId)
+        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secId.insectId),
+        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secId.insectId)
     });
 }
+
+function retrieveFromDatabase() {
+    const query = "SELECT p.id, p.first_name, p.middle_name, p.last_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.id=g.id;"
+    updatedb(query, [], (results) => {
+        console.log(results);
+        // results.forEach((row) => {
+        //     console.log(`${row}`);
+        // });
+    });
+};
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -129,8 +136,8 @@ function updatedb(query, values = [], callback) {
             };
 
             if (callback) {
-                callback(results.insertId);
-            }
+                callback(results);
+            };
         });  
     }); 
 };
@@ -138,5 +145,6 @@ function updatedb(query, values = [], callback) {
 module.exports = {
     createPatientInfo,
     createSecContactInfo,
-    saveToDatabase
+    saveToDatabase,
+    retrieveFromDatabase
 };
