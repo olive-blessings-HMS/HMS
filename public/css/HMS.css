@@ -208,3 +208,12 @@ select, button {
     width: 30%;
     height: 30%;
 }
+
+table {
+    background-color: aliceblue;
+    width: 100%; 
+    /* border-collapse: collapse;  */
+    /* margin: 20px; */
+    font-size: 2rem;
+    text-align: left;
+}
