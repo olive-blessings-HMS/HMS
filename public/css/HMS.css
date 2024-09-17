@@ -210,10 +210,13 @@ select, button {
 }
 
 table {
-    background-color: aliceblue;
     width: 100%; 
-    /* border-collapse: collapse;  */
-    /* margin: 20px; */
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: left;
+    border-spacing: 20px;
+}
+
+#patientlist {
+    background-color: aliceblue;
+    cursor: pointer;
 }
