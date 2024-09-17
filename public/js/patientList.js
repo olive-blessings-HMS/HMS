@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    const patientTable = document.getElementById('patientlist');
     fetch('/patientlist')
     .then(response => {
         if (!response.ok) {
@@ -8,12 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return response.json();
     })
     .then(patientlist => {
-        console.log(patientlist);
-        // for (let index = 0; index < patientlist.length; index++) {
-        //     for (const [key, value] of Object.entries(patientlist[index])) {
-        //         console.log(`${key} , ${value}`)
-        //     }
-        // }
+        for (let index = 0; index < patientlist.length; index++) {
+            const tr = document.createElement("tr");
+            for (const [key, value] of Object.entries(patientlist[index])) {
+                if (key != 'id') {
+                    const td = document.createElement("td");
+                    td.textContent = value;
+                    tr.appendChild(td);
+                }
+            }
+            patientTable.appendChild(tr);
+        }
     })
     .catch(error => {
         console.error('error', error)
