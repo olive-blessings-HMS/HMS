@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { createPatientInfo, createSecContactInfo, saveToDatabase } = require('./db');
+const { createPatientInfo, createSecContactInfo, saveToDatabase, retrieveFromDatabase } = require('./db');
 const app = express();
 const port = 3000;
 
@@ -24,6 +24,12 @@ app.post('/save', (req, res) => {
     saveToDatabase(patientDetailsStore, secContactDetails);
     patientDetailsStore = {};
     res.json({ redirect: '/html/homepage.html' });
+});
+
+app.get('/patientlist', (req, res) => {
+    retrieveFromDatabase((patientList) => {
+        res.json(patientList);
+    });
 });
 
 app.listen(port, () => {
