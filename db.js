@@ -101,16 +101,6 @@ function saveToDatabase(patientDetails, secContactDetails) {
     });
 }
 
-function retrieveFromDatabase() {
-    const query = "SELECT p.id, p.first_name, p.middle_name, p.last_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.id=g.id;"
-    updatedb(query, [], (results) => {
-        console.log(results);
-        // results.forEach((row) => {
-        //     console.log(`${row}`);
-        // });
-    });
-};
-
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
@@ -140,6 +130,15 @@ function updatedb(query, values = [], callback) {
             };
         });  
     }); 
+};
+
+function retrieveFromDatabase(callback) {
+    const query = "SELECT p.id, p.first_name, p.middle_name, p.last_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.id=g.id;"
+    updatedb(query, [], (results) => {
+        if (callback) {
+            callback(results);
+        }
+    })
 };
 
 module.exports = {
