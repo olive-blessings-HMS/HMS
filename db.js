@@ -2,12 +2,11 @@ const mysql = require('mysql2');
 require('dotenv').config();
 
 class Patient {
-    constructor({firstname, middlename, lastname, gender = null, age}) {
+    constructor({firstname, middlename, lastname, gender = null}) {
        this.firstName = firstname;
        this.middleName = middlename;
        this.lastName = lastname;
        this.gender = gender;
-       this.age = age;
     };
 
     saveToDatabase(tableName, callback) {
@@ -89,15 +88,15 @@ function createSecContactInfo(formDetails) {
 };
 
 function saveToDatabase(patientDetails, secContactDetails) {
-    patientDetails.patientName.saveToDatabase("patient_details", (patientId) => {
-        patientDetails.patientAddress.saveToDatabase("patient_details", patientId.insectId),
-        patientDetails.patientContact.saveToDatabase("patient_details", patientId.insectId),
-        patientDetails.patientOtherInfo.saveToDatabase(patientId.insectId)
+    patientDetails.patientName.saveToDatabase("patient_details", (patient) => {
+        patientDetails.patientAddress.saveToDatabase("patient_details", patient.insertId),
+        patientDetails.patientContact.saveToDatabase("patient_details", patient.insertId),
+        patientDetails.patientOtherInfo.saveToDatabase(patient.insertId)
     });
 
-    secContactDetails.secContactName.saveToDatabase("secondary_contact", (secId) => {
-        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secId.insectId),
-        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secId.insectId)
+    secContactDetails.secContactName.saveToDatabase("secondary_contact", (secContact) => {
+        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secContact.insertId),
+        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secContact.insertId)
     });
 }
 
