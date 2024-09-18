@@ -133,7 +133,7 @@ function updatedb(query, values = [], callback) {
 };
 
 function retrieveFromDatabase(callback) {
-    const query = "SELECT p.id, CONCAT_WS(' ', p.first_name, p.middle_name, p.last_name) AS full_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.id=g.id;"
+    const query = "SELECT p.id, CONCAT_WS(' ', p.first_name, p.middle_name, p.last_name) AS full_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.gender=g.id;"
     updatedb(query, [], (results) => {
         if (callback) {
             callback(results);
