@@ -14,7 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const [key, value] of Object.entries(patientlist[index])) {
                 if (key != 'id') {
                     const td = document.createElement("td");
-                    td.textContent = value;
+                    if (key === 'dob' && value != null) {
+                        let endIndex = value.indexOf("T");
+                        const newValue = value.slice(0, endIndex);
+                        td.textContent = newValue;
+                    } else {
+                        td.textContent = value;
+                    }
                     tr.appendChild(td);
                 }
             }
