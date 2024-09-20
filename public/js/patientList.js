@@ -16,8 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const td = document.createElement("td");
                 if (key === 'id') {
                     const button = document.createElement('button');
-                    button.className = "patientButton"
+                    button.className = "patientButton";
                     button.textContent = "Patient Details";
+                    button.addEventListener('click', async function() {
+                        const response = await fetch('/patientDetails', {
+                            method: 'POST',
+                            body: `${value}`,
+                        })
+                        const data = await response.json();
+                        window.location.href = data.redirect;
+                    });
                     td.appendChild(button);
                 } else {
                     if (key === 'dob' && value != null) {
