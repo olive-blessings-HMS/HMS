@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
     const patientTable = document.getElementById('patientlist');
     fetch('/patientlist')
     .then(response => {
@@ -10,10 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(patientlist => {
         for (let index = 0; index < patientlist.length; index++) {
+            patientDetails = Object.entries(patientlist[index])
+            patientDetails.push(patientDetails.shift());
             const tr = document.createElement("tr");
-            for (const [key, value] of Object.entries(patientlist[index])) {
-                if (key != 'id') {
-                    const td = document.createElement("td");
+            for (const [key, value] of patientDetails) {
+                const td = document.createElement("td");
+                if (key === 'id') {
+                    const button = document.createElement('button');
+                    button.className = "patientButton"
+                    button.textContent = "Patient Details";
+                    td.appendChild(button);
+                } else {
                     if (key === 'dob' && value != null) {
                         let endIndex = value.indexOf("T");
                         const newValue = value.slice(0, endIndex);
@@ -21,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         td.textContent = value;
                     }
-                    tr.appendChild(td);
                 }
+                tr.appendChild(td);
             }
             patientTable.appendChild(tr);
         }
