@@ -31,10 +31,6 @@ document.addEventListener('DOMContentLoaded', () =>{
 
             const formData = new FormData(secContactRegistration);
             const urlEncodedData = new URLSearchParams(formData).toString();
-
-            // if (!validateForm(formData)) {
-            //     throw new Error("Required fields are missing");
-            // }
     
             const response = await fetch('/save', {
             method: "POST",
