@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-class Patient {
+class Name {
     constructor({firstname, middlename, lastname, gender = null}) {
        this.firstName = firstname;
        this.middleName = middlename;
@@ -19,7 +19,7 @@ class Patient {
         const values = [this.firstName, this.middleName, this.lastName, this.gender];
         updatedb(query, values, callback);
     };
-};
+}
 
 class Address {
     constructor({address, addressTwo, lga, state}) {
@@ -35,7 +35,7 @@ class Address {
         const values = [this.address, this.addressTwo, this.lga, this.state, rowId];
         updatedb(query, values);
     };
-};
+}
 
 class ContactInfo {
     constructor({contactNumber, contactEmail}) {
@@ -49,7 +49,7 @@ class ContactInfo {
         const values = [this.contactNumber, this.contactEmail, rowId];
         updatedb(query, values);
     };
-};
+}
 
 class OtherInfos {
     constructor({birthday, stateOfOrigin, religion, occupation, doctorsNote}) {
@@ -72,20 +72,20 @@ class OtherInfos {
 
 function createPatientInfo(formDetails) {
     return {
-        patientName : new Patient(formDetails),
+        patientName : new Name(formDetails),
         patientAddress : new Address(formDetails),
         patientContact : new ContactInfo(formDetails),
         patientOtherInfo : new OtherInfos(formDetails)
     };
-};
+}
 
 function createSecContactInfo(formDetails) {
     return {
-        secContactName : new Patient(formDetails),
+        secContactName : new Name(formDetails),
         secContactAddress : new Address(formDetails),
         secContactInfo : new ContactInfo(formDetails)
     };
-};
+}
 
 function saveToDatabase(patientDetails, secContactDetails) {
     patientDetails.patientName.saveToDatabase("patient_details", (patient) => {
@@ -100,12 +100,14 @@ function saveToDatabase(patientDetails, secContactDetails) {
     });
 }
 
-const pool = mysql.createPool({
+const options = {
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     user: process.env.DB_USER,
     password: process.env.DB_PASS
- });
+};
+
+const pool = mysql.createPool(options);
 
 function updatedb(query, values = [], callback) {
     pool.getConnection(
@@ -144,5 +146,6 @@ module.exports = {
     createPatientInfo,
     createSecContactInfo,
     saveToDatabase,
-    retrieveFromDatabase
+    retrieveFromDatabase,
+    options
 };
