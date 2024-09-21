@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () =>{
 
             const formData = new FormData(secContactRegistration);
             const urlEncodedData = new URLSearchParams(formData).toString();
+
+            if (!validateForm(formData)) {
+                throw new Error("Required fields are missing");
+            }
     
             const response = await fetch('/save', {
             method: "POST",
@@ -52,5 +56,43 @@ document.addEventListener('DOMContentLoaded', () =>{
         }
 
     });
+
+    function validateForm(formData) {
+    
+        const firstNameError = document.getElementById("firstNameError");
+        const lastNameError = document.getElementById("lastNameError");
+        const contactNumberError = document.getElementById("contactNumberError");
+    
+        firstNameError.textContent = "";
+        lastNameError.textContent = "";
+        contactNumberError.textContent = "";
+    
+        let isValid = true;
+        
+        if (formData.get("firstname") === "" || formData.get("firstname") === null 
+        || /\d/.test(formData.get("firstname"))) {
+            firstNameError.textContent = 
+                "please enter your first name properly";
+            firstNameError.style.color = "red"
+            isValid = false;
+        };
+       
+        if (formData.get("lastname") === "" || formData.get("lastname") === null  
+        || /\d/.test(formData.get("firstname"))) {
+            lastNameError.textContent = 
+                "please enter your last name properly";
+            lastNameError.style.color = "red"
+            isValid = false;
+        };
+    
+        if (formData.get("contactNumber") === "" || /[a-zA-Z]/.test(formData.get("contactNumber"))) {
+            contactNumberError.textContent = 
+                "please enter a valid phonenumber";
+            contactNumberError.style.color = "red"
+            isValid = false;
+        };
+    
+        return isValid;
+    };
 
 });
