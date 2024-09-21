@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstNameError = document.getElementById("firstNameError");
         const lastNameError = document.getElementById("lastNameError");
         const genderError = document.getElementById("genderError");
-        const birthDayError = document.getElementById("birthDayError");
+        const birthdayError = document.getElementById("birthdayError");
         const contactNumberError = document.getElementById("contactNumberError");
     
         firstNameError.textContent = "";
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
         let isValid = true;
         
-        console.log(formData.get("firstname"));
         if (formData.get("firstname") === "" || formData.get("firstname") === null 
         || /\d/.test(formData.get("firstname"))) {
             firstNameError.textContent = 
