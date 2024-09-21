@@ -32,15 +32,13 @@ app.post('/next', (req, res) => {
 app.post('/save', (req, res) => {
     const formDetails = req.body;
     const patientDetails = createPatientInfo(req.session.patientDetail);
-    const secContactDetails = createSecContactInfo(formDetails);
-    console.log("patient details", patientDetails);
-    console.log("secContact details", secContactDetails);
-    saveToDatabase(patientDetails, secContactDetails);
     req.session.destroy((err) => {
         if (err) {
             return res.status(500);
         }
     });
+    const secContactDetails = createSecContactInfo(formDetails);
+    saveToDatabase(patientDetails, secContactDetails);
     res.json({ redirect: '/html/homepage.html' });
 });
 
