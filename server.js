@@ -30,6 +30,10 @@ app.post('/next', (req, res) => {
 });
 
 app.post('/save', (req, res) => {
+    if (!req.session.patientDetail) {
+        res.json({ redirect: '/html/regPatient.html' });
+        return;
+    }
     const formDetails = req.body;
     const patientDetails = createPatientInfo(req.session.patientDetail);
     req.session.destroy((err) => {
