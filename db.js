@@ -68,7 +68,7 @@ class OtherInfos {
              this.religion, this.occupation, this.doctorsNote, rowId];
         updatedb(query, values);
     };
-};
+}
 
 function createPatientInfo(formDetails) {
     return {
@@ -88,15 +88,22 @@ function createSecContactInfo(formDetails) {
 }
 
 function saveToDatabase(patientDetails, secContactDetails) {
+    let insertId, secInsertId;
     patientDetails.patientName.saveToDatabase("patient_details", (patient) => {
-        patientDetails.patientAddress.saveToDatabase("patient_details", patient.insertId),
-        patientDetails.patientContact.saveToDatabase("patient_details", patient.insertId),
-        patientDetails.patientOtherInfo.saveToDatabase(patient.insertId)
-    });
+        insertId = patient.insertId;
+        patientDetails.patientAddress.saveToDatabase("patient_details", insertId),
+        patientDetails.patientContact.saveToDatabase("patient_details", insertId),
+        patientDetails.patientOtherInfo.saveToDatabase(insertId)
 
-    secContactDetails.secContactName.saveToDatabase("secondary_contact", (secContact) => {
-        secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secContact.insertId),
-        secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secContact.insertId)
+        secContactDetails.secContactName.saveToDatabase("secondary_contact", (secContact) => {
+            secInsertId = secContact.insertId;
+            secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secInsertId),
+            secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secInsertId)
+    
+            const query = 'Insert into patient_secondaryContact (patient_id, sec_cont_id) values (?,?)';
+            const value = [insertId, secInsertId];
+            updatedb(query, value);
+        });
     });
 }
 
@@ -123,7 +130,7 @@ function updatedb(query, values = [], callback) {
 
             if (err) {
                 console.log(`error message ${err}`);
-                return;
+                throw err;
             };
 
             if (callback) {
@@ -131,16 +138,17 @@ function updatedb(query, values = [], callback) {
             };
         });  
     }); 
-};
+}
 
 function retrieveFromDatabase(callback) {
-    const query = "SELECT p.id, CONCAT_WS(' ', p.first_name, p.middle_name, p.last_name) AS full_name, g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.gender=g.id;"
+    const query = `SELECT p.id, CONCAT_WS(' ', p.first_name, p.middle_name, p.last_name) AS full_name, 
+    g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.gender=g.id;`;
     updatedb(query, [], (results) => {
         if (callback) {
             callback(results);
         }
-    })
-};
+    });
+}
 
 module.exports = {
     createPatientInfo,
