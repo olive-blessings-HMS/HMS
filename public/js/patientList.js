@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.className = "patientButton";
         button.textContent = "Patient Details";
         button.addEventListener('click', async function() {
-            const response = await fetch('/patientDetails', {
+            const response = await fetch('/expandData', {
                 method: 'POST',
                 body: `${value}`,
             })
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/patientlist')
     .then(response => {
         if (!response.ok) {
-            throw new Error(`error retrieving database ${response.status}`)
+            throw new Error(`error retrieving database ${response.status}`);
         }
         return response.json();
     })
