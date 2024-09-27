@@ -1,12 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const personalInformation = document.querySelector("#firstname, #middlename, #lastname");
     fetch('/patientDetails')
-    .then(response => {
+    .then(async response => {
         if (!response.ok) {
             throw new Error(`error retrieving userdetails${response.status}`);
         }
-        return response.json();
+
+        const data = await response.json();
+
+        if (data.redirect) {
+            window.location.href = data.redirect;
+            return;
+        }
+        return data[0];
     })
-    .then(data => {
-        console.log(data);
-    });
+    .then(patientData => {
+        const nameElement = document.createElement('p');
+        nameElement.textContent = `${patientData.firstname}`;
+        firstName.appendChild(nameElement);
+    })
 })
