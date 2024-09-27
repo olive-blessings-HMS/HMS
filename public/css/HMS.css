@@ -219,3 +219,29 @@ table {
 #patientlist {
     background-color: aliceblue;
 }
+
+#patient-profile section {
+    background-color: aliceblue;
+    margin: 1.2rem;
+}
+
+#patient-profile section p {
+    max-width: 3rem;
+}
+
+#name, #otherDetails, #contactDetails {
+    display: flex;
+    flex-direction: row;
+    gap: 15vw;
+}
+
+#personal-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title {
+    font-size: large;
+    font-weight: bold;
+}
