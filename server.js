@@ -4,8 +4,8 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 require('dotenv').config();
 const path = require('path');
-const { createPatientInfo, createSecContactInfo, saveToDatabase, 
-    retrieveFromDatabase, options} = require('./db');
+const { createPatientInfo, createSecContactInfo, previewPatientList, 
+    expandPatientDetails, saveToDatabase, options} = require('./db');
 const app = express();
 const port = 3000;  
 
@@ -30,6 +30,7 @@ app.post('/next', (req, res) => {
 });
 
 app.post('/save', (req, res) => {
+    // checks if patient information are saved
     if (!req.session.patientDetail) {
         res.json({ redirect: '/html/regPatient.html' });
         return;
@@ -47,15 +48,26 @@ app.post('/save', (req, res) => {
 });
 
 app.get('/patientlist', (req, res) => {
-    retrieveFromDatabase((patientList) => {
+    previewPatientList((patientList) => {
         res.json(patientList);
     });
 });
 
-app.post('/patientDetails', (req, res) => {
+app.post('/expandData', (req, res) => {
     const value = req.body;
     const intValue = parseInt(value, 10);
-    res.json({redirect: '/html/patientDetails.html', pateintId: intValue});
+    expandPatientDetails(intValue, (results) => {
+        req.session.expandDetail =results;
+        res.json({redirect: '/html/patientDetails.html'});
+    });
+});
+
+app.get('/patientDetails', (req, res) => {
+    if (!req.session.expandDetail) {
+        res.json({redirect: '/html/patientList.html'});
+        return;
+    }
+    res.json(req.session.expandDetail);
 });
 
 app.listen(port, () => {
