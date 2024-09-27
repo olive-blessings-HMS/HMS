@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+// use classes incase framworks are introduced later
 class Name {
     constructor({firstname, middlename, lastname, gender = null}) {
        this.firstName = firstname;
@@ -87,6 +88,8 @@ function createSecContactInfo(formDetails) {
     };
 }
 
+// avoid callback hell later
+// roll back sql transcations
 function saveToDatabase(patientDetails, secContactDetails) {
     let insertId, secInsertId;
     patientDetails.patientName.saveToDatabase("patient_details", (patient) => {
@@ -100,7 +103,7 @@ function saveToDatabase(patientDetails, secContactDetails) {
             secContactDetails.secContactAddress.saveToDatabase("secondary_contact", secInsertId),
             secContactDetails.secContactInfo.saveToDatabase("secondary_contact", secInsertId)
     
-            const query = 'Insert into patient_secondaryContact (patient_id, sec_cont_id) values (?,?)';
+            const query = 'INSERT INTO patient_secondaryContact (patient_id, sec_cont_id) values (?,?)';
             const value = [insertId, secInsertId];
             updatedb(query, value);
         });
@@ -140,20 +143,42 @@ function updatedb(query, values = [], callback) {
     }); 
 }
 
-function retrieveFromDatabase(callback) {
+function previewPatientList(callback) {
     const query = `SELECT p.id, CONCAT_WS(' ', p.first_name, p.middle_name, p.last_name) AS full_name, 
-    g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.gender=g.id;`;
+    g.gender, p.dob FROM patient_details p LEFT JOIN gender_option g on p.gender=g.id`;
     updatedb(query, [], (results) => {
         if (callback) {
             callback(results);
-        }
+        };
     });
+}
+
+function expandPatientDetails(pk, callback) {
+    const query = `SELECT p.first_name AS firstname, p.middle_name AS middlename, p.last_name AS lastname,
+    g.gender AS gender, p.dob AS birthday, p.nationality AS nationality, p.religion AS religion, p.occupation AS occupation, 
+    p.phone_number AS phonenumber, p.email AS email,
+    CONCAT_WS(' ', p.street_name, p.street_name_two, p.lga, p.state) AS address,
+    p.state_of_origin AS state_of_origin,
+    p.doctors_note AS doctors_note FROM patient_details p LEFT JOIN gender_option g
+    on p.gender=g.id where p.id=${pk}`;
+    updatedb(query, [], (results) => {
+        if (callback) {
+            callback(results);
+        };
+    });
+}
+
+function updateAttributes(tableName, attributes, values) {
+    const query = `UPDATE ${tableName}
+    SET ${attributes} = ? WHERE id = ?`;
+    updatedb(query, values);
 }
 
 module.exports = {
     createPatientInfo,
     createSecContactInfo,
     saveToDatabase,
-    retrieveFromDatabase,
+    expandPatientDetails,
+    previewPatientList,
     options
 };
