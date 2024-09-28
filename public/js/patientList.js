@@ -26,16 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let patientDetails = Object.entries(patientlist[index])
             patientDetails.push(patientDetails.shift());
             const tr = document.createElement("tr");
-            for (const [key, value] of patientDetails) {
+            for (let [key, value] of patientDetails) {
                 const td = document.createElement("td");
                 if (key === 'id') {
                     td.appendChild(createButton(value));
                 } else if (key === 'dob' && value != null) {
-                        let endIndex = value.indexOf("T");
-                        const newValue = value.slice(0, endIndex);
-                        td.textContent = newValue;
+                    value = value.split('T')[0];
+                    td.textContent = value;
                 } else {
-                        td.textContent = value;
+                    td.textContent = value;
                 }
                 tr.appendChild(td);
             }
