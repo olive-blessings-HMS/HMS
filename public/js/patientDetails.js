@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const personalInformation = document.querySelector("#firstname, #middlename, #lastname");
+    const patientInfoIds = [`#firstname`, `#middlename`, `#lastname`, `#gender`, 
+    `#birthday`, `#occupation`, `#religion`, `#phonenumber`, `#email`, '#address']
     fetch('/patientDetails')
     .then(async response => {
         if (!response.ok) {
@@ -15,8 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return data[0];
     })
     .then(patientData => {
-        const nameElement = document.createElement('p');
-        nameElement.textContent = `${patientData.firstname}`;
-        firstName.appendChild(nameElement);
+        for (let index in patientInfoIds) {
+            let patientInfo = document.querySelector(patientInfoIds[index]);
+            let patientKey = patientInfoIds[index].substring(1);
+            let patientInfoValue = patientData[patientKey];
+            let paragraph = document.createElement('p');
+            if (patientKey === 'birthday') {
+                patientInfoValue = patientInfoValue.split('T')[0];
+            }
+            paragraph.textContent = patientInfoValue;
+            patientInfo.appendChild(paragraph);
+        }
+
     })
 })
