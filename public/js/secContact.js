@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () =>{
         const option = document.createElement("option");
         option.value = key;
         option.textContent = value;
-        element.appendChild(option)
+        element.appendChild(option);
     }
 
     let secContactRegistration = document.getElementById('secContact');
@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () =>{
 
             const data = await response.json();
             window.location.href = data.redirect;
-
+            
         } catch (error) {
             console.log('Network error occured:', error);
         }
-
+        
     });
 
     function validateForm(formData) {
@@ -91,8 +91,6 @@ document.addEventListener('DOMContentLoaded', () =>{
             contactNumberError.style.color = "red"
             isValid = false;
         };
-    
         return isValid;
     };
-
 });
