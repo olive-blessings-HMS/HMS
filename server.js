@@ -14,7 +14,7 @@ const sessionStore = new MySQLStore({}, pool);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); 
-app.use(express.text());
+app.use(express.text()); // needed becasue the primaryKey is being passed as plain int 
 app.use(session({
     key: process.env.KEY1,
     secret: process.env.SECRETKEY,
@@ -22,7 +22,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 1000 * 60 * 60}
-}));
+})); // temp storage on mysql session
 
 app.post('/next', (req, res) => {
     req.session.patientDetail = req.body;
