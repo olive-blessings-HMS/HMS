@@ -154,11 +154,11 @@ function previewPatientList(callback) {
 }
 
 function expandPatientDetails(pk, callback) {
-    const query = `SELECT p.first_name AS firstname, p.middle_name AS middlename, 
-    p.last_name AS lastname, g.gender AS gender, p.dob AS birthday, p.nationality AS nationality, 
-    p.religion AS religion, p.occupation AS occupation, p.phone_number AS phonenumber, p.email AS email,
-    p.street_name AS addressOne, p.street_name_two AS addressTwo, p.lga AS lga, s.states AS state,
-    ss.states AS stateOfOrigin, p.doctors_note AS doctorsNote 
+    const query = `SELECT p.first_name AS first_name, p.middle_name AS middle_name, 
+    p.last_name AS last_name, g.gender AS gender, p.dob AS dob, p.nationality AS nationality, 
+    p.religion AS religion, p.occupation AS occupation, p.phone_number AS phone_number, p.email AS email,
+    p.street_name AS street_name, p.street_name_two AS street_name_two, p.lga AS lga, s.states AS state,
+    ss.states AS state_of_origin, p.doctors_note AS doctors_note 
     FROM patient_details p 
     LEFT JOIN gender_option g on p.gender = g.id 
     LEFT JOIN state s on p.state = s.id
@@ -172,22 +172,10 @@ function expandPatientDetails(pk, callback) {
     });
 }
 
-function updateAttributes(tableName, values, PK) {
-    const columnsQuery = 'SHOW COLUMNS FROM PATIENT_DETAILS';
-    let index = 0;
-    updatedb(columnsQuery, [], (results) => {
-        results.forEach(column => {
-            if (column.Field != 'id') {
-                const query = `UPDATE ${tableName}
-                            SET ${column.Field} = ? 
-                            WHERE id = ? AND ${column.Field} != ?`;
-                const params = [values[index], PK, values[index]];
-                updatedb(query, params);
-                index +=1;
-            }
-        });
-    });
-}
+// function updateAttributes(tableName, values, PK) {
+//     const query = `UPDATE ${tableName}
+//     SET 
+// }
 
 module.exports = {
     createPatientInfo,
