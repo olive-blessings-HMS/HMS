@@ -5,7 +5,7 @@ const MySQLStore = require('express-mysql-session')(session);
 require('dotenv').config();
 const path = require('path');
 const { createPatientInfo, createSecContactInfo, previewPatientList, 
-    expandPatientDetails, saveToDatabase, options} = require('./db');
+    expandPatientDetails, saveToDatabase, updateAttributes, options} = require('./db');
 const app = express();
 const port = 3000;  
 
@@ -47,27 +47,35 @@ app.post('/save', (req, res) => {
     res.json({ redirect: '/html/homepage.html' });
 });
 
+// retrieve list of all patient on database
 app.get('/patientlist', (req, res) => {
     previewPatientList((patientList) => {
         res.json(patientList);
     });
 });
 
+// retrieve primaryKey and use to extract patient data
 app.post('/expandData', (req, res) => {
     const value = req.body;
-    const intValue = parseInt(value, 10);
-    expandPatientDetails(intValue, (results) => {
+    req.session.patientID = parseInt(value, 10);
+    expandPatientDetails(req.session.patientID, (results) => {
         req.session.expandDetail =results;
         res.json({redirect: '/html/patientDetails.html'});
     });
 });
 
+// post retrieved details to client side
 app.get('/patientDetails', (req, res) => {
     if (!req.session.expandDetail) {
         res.json({redirect: '/html/patientList.html'});
         return;
     }
     res.json(req.session.expandDetail);
+});
+
+app.post('/updateDetails', (req, res) => {
+    const values = req.body;
+    updateAttributes('patient_details', values, req.session.patientID);
 });
 
 app.listen(port, () => {
