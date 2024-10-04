@@ -154,16 +154,17 @@ function previewPatientList(callback) {
 }
 
 function expandPatientDetails(pk, callback) {
-    const query = `SELECT p.first_name AS firstname, p.middle_name AS middlename, p.last_name AS lastname,
-    g.gender AS gender, p.dob AS birthday, p.nationality AS nationality, p.religion AS religion, p.occupation AS occupation, 
-    p.phone_number AS phonenumber, p.email AS email,
-    CONCAT_WS(' ', p.street_name, p.street_name_two, p.lga, s.states) AS address,
-    p.state_of_origin AS state_of_origin,
-    p.doctors_note AS doctors_note 
+    const query = `SELECT p.first_name AS firstname, p.middle_name AS middlename, 
+    p.last_name AS lastname, g.gender AS gender, p.dob AS birthday, p.nationality AS nationality, 
+    p.religion AS religion, p.occupation AS occupation, p.phone_number AS phonenumber, p.email AS email,
+    p.street_name AS addressOne, p.street_name_two AS addressTwo, p.lga AS lga, s.states AS state,
+    ss.states AS stateOfOrigin, p.doctors_note AS doctorsNote 
     FROM patient_details p 
     LEFT JOIN gender_option g on p.gender = g.id 
-    LEFT JOIN state s on p.state = s.id 
+    LEFT JOIN state s on p.state = s.id
+    LEFT JOIN state ss on p.state_of_origin = ss.id
     where p.id=${pk}`;
+
     updatedb(query, [], (results) => {
         if (callback) {
             callback(results);
