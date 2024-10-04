@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(patientlist => {
         for (let index = 0; index < patientlist.length; index++) {
-            let patientDetails = Object.entries(patientlist[index])
-            patientDetails.push(patientDetails.shift()); // make the primarykey the las item
+            let patientDetails = Object.entries(patientlist[index]);
+            patientDetails.push(patientDetails.shift()); // make primarykey the last item
             const tr = document.createElement("tr");
             for (let [key, value] of patientDetails) {
                 const td = document.createElement("td");
