@@ -172,10 +172,21 @@ function expandPatientDetails(pk, callback) {
     });
 }
 
-function updateAttributes(tableName, attributes, values) {
-    const query = `UPDATE ${tableName};
-    SET ${attributes} = ? WHERE id = ? AND (${attributes} != '${values[0]}')`;
-    updatedb(query, values);
+function updateAttributes(tableName, values, PK) {
+    const columnsQuery = 'SHOW COLUMNS FROM PATIENT_DETAILS';
+    let index = 0;
+    updatedb(columnsQuery, [], (results) => {
+        results.forEach(column => {
+            if (column.Field != 'id') {
+                const query = `UPDATE ${tableName}
+                            SET ${column.Field} = ? 
+                            WHERE id = ? AND ${column.Field} != ?`;
+                const params = [values[index], PK, values[index]];
+                updatedb(query, params);
+                index +=1;
+            }
+        });
+    });
 }
 
 module.exports = {
