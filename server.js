@@ -12,6 +12,7 @@ const port = 3000;
 const pool = mysql.createPool(options);
 const sessionStore = new MySQLStore({}, pool);
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public'))); 
 app.use(express.text()); // needed becasue the primaryKey is being passed as plain int 
@@ -75,7 +76,13 @@ app.get('/patientDetails', (req, res) => {
 
 app.post('/updateDetails', (req, res) => {
     const values = req.body;
-    updateAttributes('patient_details', values, req.session.patientID);
+    console.log(values);
+    // updateAttributes('patient_details', values, req.session.patientID);
+    // req.session.destroy((err) => {
+    //     if (err) {
+    //         return res.status(500);
+    //     }
+    // });
 });
 
 app.listen(port, () => {
