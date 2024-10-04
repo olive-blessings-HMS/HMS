@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', async function() {
             const response = await fetch('/expandData', {
                 method: 'POST',
-                body: `${value}`,
+                body: `${value}`, // pass the primarykey to the next page
             })
             const data = await response.json();
             window.location.href = data.redirect;
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(patientlist => {
         for (let index = 0; index < patientlist.length; index++) {
             let patientDetails = Object.entries(patientlist[index])
-            patientDetails.push(patientDetails.shift());
+            patientDetails.push(patientDetails.shift()); // make the primarykey the las item
             const tr = document.createElement("tr");
             for (let [key, value] of patientDetails) {
                 const td = document.createElement("td");
