@@ -157,10 +157,13 @@ function expandPatientDetails(pk, callback) {
     const query = `SELECT p.first_name AS firstname, p.middle_name AS middlename, p.last_name AS lastname,
     g.gender AS gender, p.dob AS birthday, p.nationality AS nationality, p.religion AS religion, p.occupation AS occupation, 
     p.phone_number AS phonenumber, p.email AS email,
-    CONCAT_WS(' ', p.street_name, p.street_name_two, p.lga, p.state) AS address,
+    CONCAT_WS(' ', p.street_name, p.street_name_two, p.lga, s.states) AS address,
     p.state_of_origin AS state_of_origin,
-    p.doctors_note AS doctors_note FROM patient_details p LEFT JOIN gender_option g
-    on p.gender=g.id where p.id=${pk}`;
+    p.doctors_note AS doctors_note 
+    FROM patient_details p 
+    LEFT JOIN gender_option g on p.gender = g.id 
+    LEFT JOIN state s on p.state = s.id 
+    where p.id=${pk}`;
     updatedb(query, [], (results) => {
         if (callback) {
             callback(results);
@@ -169,8 +172,8 @@ function expandPatientDetails(pk, callback) {
 }
 
 function updateAttributes(tableName, attributes, values) {
-    const query = `UPDATE ${tableName}
-    SET ${attributes} = ? WHERE id = ?`;
+    const query = `UPDATE ${tableName};
+    SET ${attributes} = ? WHERE id = ? AND (${attributes} != '${values[0]}')`;
     updatedb(query, values);
 }
 
@@ -180,5 +183,6 @@ module.exports = {
     saveToDatabase,
     expandPatientDetails,
     previewPatientList,
+    updateAttributes,
     options
 };
