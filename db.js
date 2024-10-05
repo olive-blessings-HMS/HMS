@@ -172,10 +172,14 @@ function expandPatientDetails(pk, callback) {
     });
 }
 
-// function updateAttributes(tableName, values, PK) {
-//     const query = `UPDATE ${tableName}
-//     SET 
-// }
+function updateAttributes(tableName, updatedData, PK) {
+    for (let key in updatedData) {
+        const query = `UPDATE ${tableName} SET ${key} = ?
+        where id = ?`
+        const values = [updatedData[key], PK];
+        updatedb(query, values);
+    };
+}
 
 module.exports = {
     createPatientInfo,
