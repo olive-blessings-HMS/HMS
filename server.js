@@ -75,14 +75,13 @@ app.get('/patientDetails', (req, res) => {
 });
 
 app.post('/updateDetails', (req, res) => {
-    const values = req.body;
-    console.log(values);
-    // updateAttributes('patient_details', values, req.session.patientID);
-    // req.session.destroy((err) => {
-    //     if (err) {
-    //         return res.status(500);
-    //     }
-    // });
+    const updatedData = req.body;
+    updateAttributes('patient_details', updatedData, req.session.patientID);
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500);
+        }
+    });
 });
 
 app.listen(port, () => {
