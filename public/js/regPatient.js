@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectElements = document.getElementById('state');
     const selectElementsTwo = document.getElementById('stateOfOrigin');
 
-    let states = {
+    const states = {
         1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
         7: 'Benue', 8: 'Borno', 9: 'Cross River', 10: 'Delta', 11: 'Ebonyi', 12: 'Edo', 
         13: 'Ekiti', 14: 'Enugu', 15: 'Gombe', 16: 'Imo', 17: 'Jigawa', 18: 'Kaduna', 
