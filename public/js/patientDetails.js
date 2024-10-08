@@ -2,7 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // use query selectAll here later add another class
     const patientInfoIds = [`#first_name`, `#middle_name`, `#last_name`, `#dob`,
     `#gender`,  `#occupation`, `#religion`, `#phone_number`, `#email`, '#street_name', 
-    '#street_name_two', '#lga', '#state', '#state_of_origin', '#nationality', '#doctors_note']
+    '#street_name_two', '#lga', '#state', '#state_of_origin', '#nationality', '#doctors_note'];
+
+    const states = {
+        1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
+        7: 'Benue', 8: 'Borno', 9: 'Cross River', 10: 'Delta', 11: 'Ebonyi', 12: 'Edo', 
+        13: 'Ekiti', 14: 'Enugu', 15: 'Gombe', 16: 'Imo', 17: 'Jigawa', 18: 'Kaduna', 
+        19: 'Kano', 20: 'Katsina', 21: 'Kebbi', 22: 'Kogi', 23: 'Kwara', 24: 'Lagos', 
+        25: 'Nasarawa', 26: 'Niger', 27: 'Ogun', 28: 'Ondo', 29: 'Osun', 30: 'Oyo', 
+        31: 'Plateau', 32: 'Rivers', 33: 'Sokoto', 34: 'Taraba', 35: 'Yobe', 36: 'Zamfara', 
+        37: 'Federal Capital Territory (FCT)', 38: 'N/A'
+    };
 
     const editButton = document.createElement('button');
     editButton.textContent = 'Update';
@@ -62,11 +72,25 @@ document.addEventListener('DOMContentLoaded', () => {
         element.replaceWith(select);
     }
 
+    function createStateOptions(select, key, value) {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = value;
+        select.appendChild(option);
+    }
+
     function makeEditable(element) {
         if (isEditing) {
-            // change from input box to select to match int datatype in database
+            // change from input box 'string' to select with value type int to match datatype in database
             if (element.id === 'gender') {
                 createGenderOptions(element);
+            } else if (element.id === 'state_of_origin' || 
+                element.id === 'state') {
+                const select = document.createElement("select");
+                Object.entries(states).forEach(([key, value]) => { 
+                    createStateOptions(select, key, value);
+                });
+                element.replaceWith(select);
             } else {
                 element.contentEditable = true;
                 element.focus();
@@ -83,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             p.contentEditable = isEditing;
             if (!isEditing) {
                 if (p.id === 'gender') {``
-                    newFieldsValues[p.id] = p.value
+                    newFieldsValues[p.id] = p.value;
                 } else {
                     newFieldsValues[p.id] = p.textContent;
                 }
