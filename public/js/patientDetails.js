@@ -46,23 +46,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+    function createGenderOptions(element) {
+        const select = document.createElement('select');
+        select.id = 'gender';
+        select.className = 'infoField';
+        const option1 = document.createElement('option');
+        option1.value = '1';
+        option1.textContent = 'Male';
+        select.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = '2';
+        option2.textContent = 'Female';
+        select.appendChild(option2);
+        element.replaceWith(select);
+    }
+
     function makeEditable(element) {
         if (isEditing) {
             // change from input box to select to match int datatype in database
             if (element.id === 'gender') {
-            const select = document.createElement('select');
-            select.id = 'gender';
-            select.className = 'infoField';
-            const option1 = document.createElement('option');
-            option1.value = '1';
-            option1.textContent = 'Male';
-            select.appendChild(option1);
-            
-            const option2 = document.createElement('option');
-            option2.value = '2';
-            option2.textContent = 'Female';
-            select.appendChild(option2);
-            element.replaceWith(select);
+                createGenderOptions(element);
             } else {
                 element.contentEditable = true;
                 element.focus();
@@ -78,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             p.style.backgroundColor = isEditing ? 'white' : '';
             p.contentEditable = isEditing;
             if (!isEditing) {
-                if (p.id === 'gender') {
+                if (p.id === 'gender') {``
                     newFieldsValues[p.id] = p.value
                 } else {
                     newFieldsValues[p.id] = p.textContent;
