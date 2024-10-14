@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // use query selectAll here later add another class
-    const patientInfoIds = [`#first_name`, `#middle_name`, `#last_name`, `#dob`,
-    `#gender`,  `#occupation`, `#religion`, `#phone_number`, `#email`, '#street_name', 
-    '#street_name_two', '#lga', '#state', '#state_of_origin', '#nationality', '#doctors_note'];
-
     const states = {
         1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
         7: 'Benue', 8: 'Borno', 9: 'Cross River', 10: 'Delta', 11: 'Ebonyi', 12: 'Edo', 
@@ -13,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
         31: 'Plateau', 32: 'Rivers', 33: 'Sokoto', 34: 'Taraba', 35: 'Yobe', 36: 'Zamfara', 
         37: 'Federal Capital Territory (FCT)', 38: 'N/A'
     };
+
+    // use query selectAll here later add another class
+    const patientInfoIds = [`#first_name`, `#middle_name`, `#last_name`, `#dob`,
+        `#gender`,  `#occupation`, `#religion`, `#phone_number`, `#email`, '#street_name', 
+        '#street_name_two', '#lga', '#state', '#state_of_origin', '#nationality', '#doctors_note'];
 
     const editButton = document.createElement('button');
     editButton.textContent = 'Update';

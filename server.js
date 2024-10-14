@@ -14,7 +14,7 @@ const sessionStore = new MySQLStore({}, pool);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use('/js', express.static(path.join(__dirname, 'public/js'))); 
 app.use(express.text()); // needed becasue the primaryKey is being passed as plain int 
 app.use(session({
     key: process.env.KEY1,
