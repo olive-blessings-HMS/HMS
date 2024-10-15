@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Select all <select> elements for state
     const selectElements = document.getElementById('state');
     const selectElementsTwo = document.getElementById('stateOfOrigin');
 
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const option = document.createElement("option");
         option.value = key;
         option.textContent = value;
-        element.appendChild(option)
+        element.appendChild(option);
     }
 
     Object.entries(states).forEach(([key, value]) => {
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         || /\d/.test(formData.get("firstname"))) {
             firstNameError.textContent = 
                 "please enter your first name properly";
-            firstNameError.style.color = "red"
+            firstNameError.style.color = "red";
             isValid = false;
         };
        
@@ -87,28 +86,28 @@ document.addEventListener('DOMContentLoaded', () => {
         || /\d/.test(formData.get("firstname"))) {
             lastNameError.textContent = 
                 "please enter your last name properly";
-            lastNameError.style.color = "red"
+            lastNameError.style.color = "red";
             isValid = false;
         };
   
         if (formData.get("gender") === "" || formData.get("gender") === null) {
             genderError.textContent = 
                 "please select a gender";
-            genderError.style.color = "red"
+            genderError.style.color = "red";
             isValid = false;
         };
      
         if (formData.get("birthday") === "") {
             birthdayError.textContent = 
                 "please enter birthday";
-            birthdayError.style.color = "red"
+            birthdayError.style.color = "red";
             isValid = false;
         };
     
         if (formData.get("contactNumber") === "" || /[a-zA-Z]/.test(formData.get("contactNumber"))) {
             contactNumberError.textContent = 
                 "please enter a valid phonenumber";
-            contactNumberError.style.color = "red"
+            contactNumberError.style.color = "red";
             isValid = false;
         };
     
