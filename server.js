@@ -27,13 +27,13 @@ app.use(session({
 
 app.post('/next', (req, res) => {
     req.session.patientDetail = req.body;
-    res.json({ redirect: '/html/secContact.html' });
+    res.json({ redirect: '/html/seccontact.html' });
 });
 
 app.post('/save', (req, res) => {
     // checks if patient information are saved
     if (!req.session.patientDetail) {
-        res.json({ redirect: '/html/regPatient.html' });
+        res.json({ redirect: '/html/regpatient.html' });
         return;
     }
     const formDetails = req.body;
@@ -61,14 +61,14 @@ app.post('/expandData', (req, res) => {
     req.session.patientID = parseInt(value, 10);
     expandPatientDetails(req.session.patientID, (results) => {
         req.session.expandDetail =results;
-        res.json({redirect: '/html/patientDetails.html'});
+        res.json({redirect: '/html/patientdetails.html'});
     });
 });
 
 // post retrieved details to client side
 app.get('/patientDetails', (req, res) => {
     if (!req.session.expandDetail) {
-        res.json({redirect: '/html/patientList.html'});
+        res.json({redirect: '/html/patientlist.html'});
         return;
     }
     res.json(req.session.expandDetail);
