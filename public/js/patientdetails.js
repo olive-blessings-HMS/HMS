@@ -9,11 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         37: 'Federal Capital Territory (FCT)', 38: 'N/A'
     };
 
-    // use query selectAll here later add another class
-    const patientInfoIds = [`#first_name`, `#middle_name`, `#last_name`, `#dob`,
-        `#gender`,  `#occupation`, `#religion`, `#phone_number`, `#email`, '#street_name', 
-        '#street_name_two', '#lga', '#state', '#state_of_origin', '#nationality', '#doctors_note'];
-
+    const patientInfoIds = document.querySelectorAll('#patient-profile .retrievedInfo');
     const editButton = document.createElement('button');
     editButton.textContent = 'Update';
     editButton.id = 'editButton';
@@ -39,20 +35,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return data[0];
     })
     .then(patientData => {
-        for (let index in patientInfoIds) {
-            let patientInfo = document.querySelector(patientInfoIds[index]);
-            let patientKey = patientInfoIds[index].substring(1); // Remove the # from the ID
-            let patientInfoValue = patientData[patientKey]; // access individual values from the database
+        for (let element of patientInfoIds) {
+            let patientInfoValue = patientData[element.id]; // access individual values from the database
             let paragraph = document.createElement('p');
             paragraph.className = 'infoField';
-            paragraph.id = `${patientKey}`;
-            if (patientKey === 'dob') {
+            paragraph.id = `${element.id}`;
+            if (element.id === 'dob') {
                 patientInfoValue = patientInfoValue.split('T')[0]; // Remove Timestamp from database results
             }
             paragraph.textContent = patientInfoValue;
-            fields[patientKey] = patientInfoValue;
+            fields[element.id] = patientInfoValue; // saving key and value, to check changes in database
             paragraph.addEventListener('click', () => makeEditable(paragraph),);
-            patientInfo.appendChild(paragraph);
+            element.appendChild(paragraph);
         }
     })
 
