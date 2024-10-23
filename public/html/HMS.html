@@ -23,21 +23,24 @@
         <main>
             <section class="main">
                 <section class="login">
-                    <h2> Login </h2>
-                    <input type="text" 
-                        id="email" 
-                        name="email" 
-                        placeholder="email" 
+                    <h2>LOGIN</h2>
+                    <form id="loginForm">
+                        <input type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Email" 
+                            size="25" 
+                        />
+                        <input type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Password" 
                         size="25" 
-                    />
-                    <input type="text" 
-                    id="password" 
-                    name="password" 
-                    placeholder="password" 
-                    size="25" 
-                    />
+                        />
+                        <button type="submit">Login</button>
+                    </form>
                     <section class="clickable-text">
-                        <p> Forgotten email?</p>
+                        <p> Forgotten password?</p>
                     </section>
                     <section class="clickable-request">
                         <p> Request access </p>
