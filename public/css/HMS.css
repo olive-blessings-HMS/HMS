@@ -41,6 +41,14 @@ header {
     margin-left: 3vw;
     margin-right: 10vw;
     margin-top: 5vw;
+    justify-content: center;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vw;
 }
 
 input::placeholder {
