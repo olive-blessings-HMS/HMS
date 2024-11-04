@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDXWA9cbObzKFddqebF34Ke9m6qhjkbMHw",
@@ -15,3 +15,27 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
+
+// Register a New User
+function register(email, password) {
+  createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+              const user = userCredential.user;
+              console.log("User registered", user);
+        })
+        .catch((error) => {
+              console.error("Error registered", error);
+        });
+}
+
+// Sign In a User
+function signIn(email, password) {
+  signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("User registered", user);
+      })
+      .catch((error) => {
+            console.error("Error registered", error);
+      });
+}
