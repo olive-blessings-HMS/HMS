@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         option.value = key;
         option.textContent = value;
         element.appendChild(option);
-    }
+    };
 
     let secContactRegistration = document.getElementById('secContact');
 
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
        
         if (formData.get("lastname") === "" || formData.get("lastname") === null  
-        || /\d/.test(formData.get("firstname"))) {
+        || /\d/.test(formData.get("lastname"))) {
             lastNameError.textContent = 
                 "please enter your last name properly";
             lastNameError.style.color = "red"
