@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-// use classes incase framworks are introduced later
+// used classes incase incase it needs to be scaled
 class Name {
     constructor({firstname, middlename, lastname, gender = null}) {
        this.firstName = firstname;
