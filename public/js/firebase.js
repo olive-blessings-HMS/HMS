@@ -39,3 +39,11 @@ function signIn(email, password) {
             console.error("Error registered", error);
       });
 }
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = loginForm.getElementById("email").value;
+      console.log(email);
+});
