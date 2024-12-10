@@ -89,7 +89,7 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'HMS.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'HMS.html'));
 });
 
 app.listen(port, () => {
