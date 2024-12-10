@@ -6,7 +6,7 @@ This project is a Patient Data Management System designed to help medical profes
 
 - Patient Data Management: Create, read, update, and delete (CRUD) patient records.
 
-- Design: Based on cleint request I ensured that the website can run efficiently on devices with limited memory and operate reliably even on slow internet connections
+- Design: Based on client request I ensured that the website can run efficiently on devices with limited memory and operate reliably even on slow internet connections
 
 
 ## PLANNED FEATURES
@@ -32,3 +32,20 @@ This project is a Patient Data Management System designed to help medical profes
 - Database: MySQL
 
 - cloud: AWS EC2, AWS RDS
+
+To test the account creation and other features of the application, please visit the following URL:
+
+Demo URL:
+http://16.171.145.206
+
+Test Account
+Username: admin@gmail.com
+Password: admin1234
+
+What You Can Test
+Account Creation: Use the demo credentials to test the account creation process.
+Save to Amazon RDS: The account data is saved to Amazon RDS, allowing you to test the database interaction and retrieval of account details.
+Retrieving and Editing Information: After account creation, you can test retrieving and editing saved information in the application.
+
+Current Status
+Other Functions: Some features are still under development, and may not be fully functional at this time.
