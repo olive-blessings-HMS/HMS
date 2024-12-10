@@ -84,9 +84,13 @@ app.post('/updateDetails', (req, res) => {
     });
 });
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
     console.log(req.body);
 })
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'HMS.html'));
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
