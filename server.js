@@ -84,6 +84,10 @@ app.post('/updateDetails', (req, res) => {
     });
 });
 
+app.get('/login', (req, res) => {
+    console.log(req.body);
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
