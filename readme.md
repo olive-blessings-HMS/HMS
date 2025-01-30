@@ -4,9 +4,6 @@ This project is a Patient Data Management System designed to help medical profes
 
 - Patient Data Management: Create, read, update, and delete (CRUD) patient records.
 
-- Design: Based on client request I ensured that the website can run efficiently on devices with limited memory and operate reliably even on slow internet connections
-
-
 ## PLANNED FEATURES
 
 - Search Functionality: Quickly find patient records using filters like name, age, and medical history.
