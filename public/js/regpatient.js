@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const selectElements = document.getElementById('state');
-    const selectElementsTwo = document.getElementById('stateOfOrigin');
+    const state = document.querySelector('#state');
+    const stateOfOrigin = document.querySelector('#stateOfOrigin');
 
     const states = {
         1: 'Abia', 2: 'Adamawa', 3: 'Akwa Ibom', 4: 'Anambra', 5: 'Bauchi', 6: 'Bayelsa', 
@@ -19,99 +19,64 @@ document.addEventListener('DOMContentLoaded', () => {
         element.appendChild(option);
     }
 
-    Object.entries(states).forEach(([key, value]) => {
-        createSelect(selectElements, key, value);
-        createSelect(selectElementsTwo, key, value);
-    });
-
-    let patientRegistration = document.getElementById('patient-details');
-
-    patientRegistration.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        try {
-
-            const formData = new FormData(patientRegistration);
-            const urlEncodedData = new URLSearchParams(formData).toString();
-
-            if (!validateForm(formData)) {
-                throw new Error("Required fields are missing");
-            }
-    
-            const response = await fetch('/next', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            body: urlEncodedData
-            })
-            
-            if (!response.ok) {
-                throw new Error('Server error:' + response.status);
-            }
-
-            const data = await response.json();
-            window.location.href = data.redirect;
-
-        } catch (error) {
-            console.log('Network error occured:', error);
-        }
-    });
-
-    function validateForm(formData) {
-    
-        const firstNameError = document.getElementById("firstNameError");
-        const lastNameError = document.getElementById("lastNameError");
-        const genderError = document.getElementById("genderError");
-        const birthdayError = document.getElementById("birthdayError");
-        const contactNumberError = document.getElementById("contactNumberError");
-    
-        firstNameError.textContent = "";
-        lastNameError.textContent = "";
-        genderError.textContent = "";
-        birthdayError.textContent = "";
-        contactNumberError.textContent = "";
-    
-        let isValid = true;
-        
-        if (formData.get("firstname") === "" || formData.get("firstname") === null 
-        || /\d/.test(formData.get("firstname"))) {
-            firstNameError.textContent = 
-                "please enter your first name properly";
-            firstNameError.style.color = "red";
-            isValid = false;
-        };
-       
-        if (formData.get("lastname") === "" || formData.get("lastname") === null  
-        || /\d/.test(formData.get("firstname"))) {
-            lastNameError.textContent = 
-                "please enter your last name properly";
-            lastNameError.style.color = "red";
-            isValid = false;
-        };
-  
-        if (formData.get("gender") === "" || formData.get("gender") === null) {
-            genderError.textContent = 
-                "please select a gender";
-            genderError.style.color = "red";
-            isValid = false;
-        };
-     
-        if (formData.get("birthday") === "") {
-            birthdayError.textContent = 
-                "please enter birthday";
-            birthdayError.style.color = "red";
-            isValid = false;
-        };
-    
-        if (formData.get("contactNumber") === "" || /[a-zA-Z]/.test(formData.get("contactNumber"))) {
-            contactNumberError.textContent = 
-                "please enter a valid phonenumber";
-            contactNumberError.style.color = "red";
-            isValid = false;
-        };
-    
-        return isValid;
-    };
+    for (const [key, value] of Object.entries(states)) {
+        createSelect(state, key, value);
+        createSelect(stateOfOrigin, key, value);
+    }
 });
 
+let patientRegistration = document.querySelector('#patient-details');
+
+patientRegistration.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+
+        const formData = new FormData(patientRegistration);
+        const urlEncodedData = new URLSearchParams(formData).toString();
+
+        if (!validateForm(formData)) {
+            throw new Error("Required fields are missing");
+        }
+
+        const response = await fetch('/next', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        body: urlEncodedData
+        })
+        
+        if (!response.ok) {
+            throw new Error('Server error:' + response.status);
+        }
+
+        const data = await response.json();
+        window.location.href = data.redirect;
+
+    } catch (error) {
+        console.log('Network error occured:', error);
+    }
+});
+
+function validateForm(formData) {
+    let isValid = true;
+    let optionalInputs = ["middlename", "addressTwo", "contactEmail", "lga"]
+    for (const keys of formData.keys()) {
+        if (optionalInputs.includes(keys)) {
+                continue;
+            }
+
+        if (formData.get(`${keys}`) == "") {
+            let elem = document.querySelector(`#${keys}`);
+            let error = document.createElement("span");
+            error.textContent = `please enter a valid ${keys}`;
+            error.style.color = "red";
+            elem.append(error);
+            let parentElem = elem.parentElement;
+            parentElem.append(error);
+            isValid = false;
+        };
+    }
+    return isValid;
+};
