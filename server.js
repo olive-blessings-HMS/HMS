@@ -1,20 +1,23 @@
-const express = require('express');
-const mysql = require('mysql2');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
-require('dotenv').config();
-const path = require('path');
-const { createPatientInfo, createSecContactInfo, previewPatientList, 
-    expandPatientDetails, saveToDatabase, updateAttributes, options} = require('./db');
+import express from 'express';
+import mysql2 from 'mysql2';
+import session from 'express-session';
+import MySQLStore from 'express-mysql-session';
+import dotenv from 'dotenv';
+dotenv.config();
+import path from 'path';
+import  { createPatientInfo, createSecContactInfo, previewPatientList, 
+    expandPatientDetails, saveToDatabase, updateAttributes, options} from  './db.js';
 const app = express();
 const port = 3000;  
 
-const pool = mysql.createPool(options);
-const sessionStore = new MySQLStore({}, pool);
+const store = MySQLStore(session);
+
+const pool = mysql2.createPool(options);
+const sessionStore = new store({}, pool);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(path.join('public'))); 
 app.use(express.text()); // needed becasue the primaryKey is being passed as plain int 
 app.use(session({
     key: process.env.KEY1,
@@ -31,7 +34,6 @@ app.post('/next', (req, res) => {
 });
 
 app.post('/save', (req, res) => {
-    // checks if patient information are saved
     if (!req.session.patientDetail) {
         res.json({ redirect: '/html/regpatient.html' });
         return;
@@ -89,7 +91,7 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'html', 'HMS.html'));
+    res.sendFile(path.join('public', 'html', 'HMS.html'));
 });
 
 app.listen(port, () => {
